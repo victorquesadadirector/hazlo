@@ -10,14 +10,19 @@ function armarMensaje(r) {
   var empresa = limpio(r.empresa);
   var detalle = limpio(r.detalle);
   var quien = limpio(r.quien);
+  var alcance = limpio(r.alcance);
 
+  var parte = alcance === 'todavía no lo sé'
+    ? ' y quiero que me asesoren en qué necesito.'
+    : ' y necesito ' + alcance + '.';
   var presupuesto = limpio(r.presupuesto) === 'todavía no lo sé'
     ? ' y todavía no tengo claro el presupuesto'
     : ', con un presupuesto ' + limpio(r.presupuesto);
   var sujeto = quien.indexOf('una ') === 0 ? 'Somos ' : 'Soy ';
 
   var mensaje = 'Hola, soy ' + nombre + (empresa ? ' de ' + empresa : '') + '. ' +
-    'Necesito ' + limpio(r.servicio) + ' para ' + limpio(r.cuando) + presupuesto + '. ' +
+    'Quiero hacer ' + limpio(r.servicio) + parte + ' ' +
+    'Es para ' + limpio(r.cuando) + presupuesto + '. ' +
     sujeto + quien + '.';
   return detalle ? mensaje + '\n\n' + detalle : mensaje;
 }
@@ -27,7 +32,7 @@ function enlaceWhatsApp(mensaje) {
 }
 
 function validar(r) {
-  var elecciones = ['servicio', 'quien', 'cuando', 'presupuesto'];
+  var elecciones = ['servicio', 'alcance', 'quien', 'cuando', 'presupuesto'];
   for (var i = 0; i < elecciones.length; i++) {
     if (!limpio(r[elecciones[i]])) {
       return { ok: false, error: 'Falta responder una de las preguntas anteriores.' };
